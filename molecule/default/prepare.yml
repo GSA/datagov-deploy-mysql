@@ -7,12 +7,15 @@
       vars:
         packages:
           - mysql-server
+          - python-pip
 
     # state=started doesn't seem to actually start mysql on trusty
     - name: start mysql
       service: name=mysql state=started
 
+    - name: install ansible dependencies
+      pip: name=PyMySQL state=present
+
     # For mysql <5.7.6
     - name: set root password for remote login to mysql
       mysql_user: name=root password=fakemasterpassword
-      delegate_to: localhost

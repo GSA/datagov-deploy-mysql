@@ -7,7 +7,6 @@
     login_host={{ mysql_login_host }}
     login_password={{ mysql_login_password }}
     state=present
-  delegate_to: localhost
 
 - name: create database user for application
   mysql_user: >-
@@ -18,4 +17,3 @@
     login_host={{ mysql_login_host }}
     login_password={{ mysql_login_password }}
     state=present
-  delegate_to: localhost
