@@ -1,37 +1,102 @@
-## Welcome to GitHub Pages
+[![CircleCI](https://circleci.com/gh/GSA/datagov-deploy-mysql.svg?style=svg)](https://circleci.com/gh/GSA/datagov-deploy-mysql)
 
-You can use the [editor on GitHub](https://github.com/GSA/datagov-deploy-mysql/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+# datagov-deploy-mysql
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Configures mysql server with for a Data.gov application including an app
+database and user.
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Usage
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```yaml
+---
+- name: create application database
+  hosts: all
+  roles:
+    - role: gsa.datagov-deploy-mysql
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Dependencies
 
-### Jekyll Themes
+- PyMySQL
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/GSA/datagov-deploy-mysql/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
-### Support or Contact
+### Variables
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+**`mysql_app_name`** string
+
+The name of your application which will be used as a default for the database name, user, and other configuration.
+
+
+**`mysql_user_password`** string **required**
+
+The password to set on the database user, used for your app to login to the
+database.
+
+
+**`mysql_user_name`** string (default: `{{ mysql_app_name }}`)
+
+Explicitly set the database user name to create.
+
+
+**`mysql_database_name`** string (default: `{{ mysql_app_name }}`)
+
+The name of the database to create.
+
+
+**`mysql_login_host`** string (default: `localhost`)
+
+The remote host where the database will be created.
+
+
+**`mysql_login_user`** string (default: `root`)
+
+The master database user with superuser permissions to login as. This user is
+used by the role to create and configure the database. It should **not** be your
+app user.
+
+
+**`mysql_login_password`** string **required**
+
+The master password to use to login to the PostgreSQL host.
+
+
+
+
+
+## Contributing
+
+See [CONTRIBUTING](CONTRIBUTING.md) for additional information.
+
+
+## Development
+
+Install dependencies.
+
+    $ pipenv install
+
+Run the playbook with molecule.
+
+    $ pipenv run molecule converge
+
+Run the tests.
+
+    $ pipenv run molecule test
+
+For more information on how to use
+[Molecule](https://molecule.readthedocs.io/en/latest/) for development, see [our
+wiki](https://github.com/GSA/datagov-deploy/wiki/Developing-Ansible-roles-with-Molecule).
+
+
+## Public domain
+
+This project is in the worldwide [public domain](LICENSE.md). As stated in
+[CONTRIBUTING](CONTRIBUTING.md):
+
+> This project is in the public domain within the United States, and copyright
+> and related rights in the work worldwide are waived through the [CC0 1.0
+> Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+>
+> All contributions to this project will be released under the CC0 dedication.
+> By submitting a pull request, you are agreeing to comply with this waiver of
+> copyright interest.

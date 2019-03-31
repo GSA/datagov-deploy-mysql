@@ -1,0 +1,18 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: install test depedencies
+      apt: name={{ packages }} state=present
+      vars:
+        packages:
+          - mysql-server
+
+    # state=started doesn't seem to actually start mysql on trusty
+    - name: start mysql
+      service: name=mysql state=started
+
+    # For mysql <5.7.6
+    - name: set root password for remote login to mysql
+      mysql_user: name=root password=fakemasterpassword
+      delegate_to: localhost
